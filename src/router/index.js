@@ -7,12 +7,13 @@ const routes = [
   {
     path: "/",
     name: "images",
-    component: () => import("../views/Images.vue")
+    component: () => import("../views/Images.vue"),
+    props: true
   },
   {
     path: "/images/:id",
     name: "image",
-    component: () => import("../views/Image.vue"),
+    component: () => import("../views/Images.vue"),
     props: true
   }
 ];

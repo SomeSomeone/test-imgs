@@ -1,12 +1,29 @@
 <template>
-  <div>
-    <v-btn fab small to="/"><v-icon>mdi-arrow-left</v-icon></v-btn>
-    <v-card class="mx-auto pb-8" max-width="650px">
-      <v-img class="white--text align-end" :src="item.full_picture"></v-img>
-      <v-card-subtitle class="pb-0" v-if="tags">
-        <v-chip-group>
-          <v-chip v-for="tag in tags" v-bind:key="tag">{{ tag }}</v-chip>
-        </v-chip-group>
+  <div class="img" v-on:click.stop="">
+    <v-card class="mx-auto pb-8" max-width="650px" max-height="90vh">
+      <v-zoomer
+        ref="zoom"
+        style="width: 650px; height: 500px; position: relative"
+        :max-scale="10"
+        :zoomed.sync="zoomed"
+      >
+        <img
+          :src="item.full_picture"
+          style="object-fit: contain; width: 100%; height: 100%;"
+        />
+      </v-zoomer>
+      <div class="text-center">
+        <v-btn fab dark v-on:click.stop="() => $refs.zoom.zoomIn(2)" small
+          ><v-icon>mdi-plus</v-icon></v-btn
+        >
+        <v-btn fab dark v-on:click.stop="() => $refs.zoom.zoomOut(0.5)" small
+          ><v-icon>mdi-minus</v-icon></v-btn
+        >
+      </div>
+      <v-card-subtitle class="" v-if="tags">
+        <v-chip class="mt-2 mr-2" v-for="tag in tags" v-bind:key="tag">{{
+          tag
+        }}</v-chip>
       </v-card-subtitle>
 
       <v-card-text class="text--primary">
@@ -110,7 +127,8 @@ export default {
     }
   },
   data: () => ({
-    dialShare: false
+    dialShare: false,
+    zoomed: false
   }),
   computed: {
     item() {
@@ -146,27 +164,18 @@ export default {
       );
     }
   },
-  watch: {},
+  watch: {
+    id() {
+      this.getItem();
+    }
+  },
   mounted() {
     this.getItem();
   }
 };
 </script>
 <style lang="scss">
-.imgs {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  .img-block {
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%;
-    position: relative;
-    img {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      object-fit: cover;
-    }
-  }
+.img::v-deep .v-ripple__container {
+  display: none !important;
 }
 </style>
