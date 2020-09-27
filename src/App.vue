@@ -34,26 +34,33 @@
     </v-app-bar>
 
     <v-main>
-      <HelloWorld />
+      <v-overlay v-if="this.loader">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
+      <router-view v-else></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
-
 export default {
   name: "App",
 
-  components: {
-    HelloWorld
-  },
+  components: {},
 
   data: () => ({
-    //
+    loader: true
   }),
-  beforeCreate() {
-    this.$store.dispatch("AuthStore/authorize");
+  methods: {
+    authorize() {
+      this.loader = true;
+      this.$store
+        .dispatch("AuthStore/authorize")
+        .finally(() => (this.loader = false));
+    }
+  },
+  mounted() {
+    this.authorize();
   }
 };
 </script>

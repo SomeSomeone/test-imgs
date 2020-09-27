@@ -10,7 +10,6 @@ const getters = {
 };
 const mutations = {
   setToken(state, token) {
-    debugger;
     state.token = token;
     AuthService.setToken(token);
   }
@@ -18,7 +17,6 @@ const mutations = {
 const actions = {
   authorize({ commit }) {
     return AuthService.authRequest().then(token => {
-      debugger;
       commit("setToken", token);
     });
   }
