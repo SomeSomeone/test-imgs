@@ -51,6 +51,9 @@ export default {
 
   data: () => ({
     //
-  })
+  }),
+  beforeCreate() {
+    this.$store.dispatch("AuthStore/authorize");
+  }
 };
 </script>
